@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html style="height: 94.5%;">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project ASAP</title> 
+    <link href="header_.css" type="text/css" rel="stylesheet">
+    <link href="font.css" type="text/css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/1443bcac90.js" crossorigin="anonymous"></script>
+    <style type="text/css">
+        body {
+            height: 100%;background-color: #ff5858; overflow:hidden;
+        }
+        .wrap {
+            height: 100%; width: 100%; display: flex; justify-content: center; flex-direction: column; align-items: center;
+        }
+        ._body{
+            overflow: scroll;
+            /* IE scroll 숨김 */
+            -ms-overflow-style: none;
+            height: 95%; width: 70%; background-color: white;display: flex; flex-direction: column;
+        }
+        ._body::-webkit-scrollbar { 
+            display: none;
+            width: 0 !important;
+        }
+        .lostDog {
+            display: flex;
+            flex-direction:row;
+            border: 1px solid #ff5858;
+            height: 100%;
+            width: 45%;
+            border: 1px solid lightgray;
+        }
+        .main {
+            height: 30%; width: 100%; display: flex; 
+        }
+
+        .footer {
+            width: 70%; height: 5%; background-color: white; border-top: 1px solid #ff5858;
+            display: flex;
+            justify-content: space-evenly;
+        }
+        .find, .submit {
+            display: inline-block;
+            padding: 1%;
+            color: #fff;
+            text-align: center;
+            vertical-align: middle;
+            background-color: #999999;
+            cursor: pointer;
+            height: 7%;
+            border: 1px solid #999999;
+            margin-bottom: 10px;
+            width: 98%;
+        }
+        .upload-name, .texts, .age, .ex, .dogName, .name, .phone{
+            margin-top: 5px;
+            height: 10%;
+            padding: 1%;
+            vertical-align: middle;
+            border: 1px solid #dddddd;
+            width: 98%;
+            color: #999999;
+        }
+        .file {
+            position: absolute;
+            width: 35%;
+            height: 0;
+            padding: 0;
+            overflow: hidden;
+            border: 0;margin-left: 10px;padding-top: 8px;padding-bottom: 0px;height: 35px;
+       
+        }
+    </style>
+</head>
+<body>    
+    <nav class="navBar" style="border-bottom: 2px solid lightgray;">
+        <div class="navBar_logo">
+            <i class="fa-solid fa-dog"></i>
+            <a href="">ASAP 프로젝트</a>
+        </div>
+        <ul class="navBar_menu">
+           <a href="index.html"><li>메인</li></a> 
+           <a href="report.html"><li>제보하기</li></a> 
+           <a href="lost.html"><li>잃어버렸어요</li></a>
+           <a href="find.html"><li>주변 강아지 찾기</li></a>
+        </ul>
+        <a href="#" class="navBar_toggleBtn">
+            <i class="fa-solid fa-bars"></i>
+        </a>
+    </nav>
+    <div class="wrap">
+        <div class="_body">
+            <div class="main" id="main" style="height:100%; flex-direction: column; align-items: center;">
+                <div style="width: 30%; height: 30%; border: 1px solid lightgray; display: flex; justify-content: center; align-items: center; margin-top: 15px;">
+                    <img src="image.jpg" style="height:80%; width: 80%;">
+                </div>
+                <div style="width: 40%; ">
+                    <input class="upload-name" id="upLoad" value="첨부파일" placeholder="첨부파일" readonly>
+                    <label class="find" for="file">파일찾기</label>
+                    <!--<input type="file" id="file">-->
+                    <label style="display: block;">보호자 명 </label>
+                    <input class="name" name="" placeholder="이름" ><br>
+                    <label style="display: block;">보호자 연락처 </label>
+                    <input class="phone" name="" placeholder="이름" ><br>
+                    <label style="display: block;">강아지 성별 </label>
+                    <input class="dogName" type="text" name="" placeholder="이름" >
+                    <label style="display: block;">강아지 나이 </label>
+                    <input class="age" type="text" name="" placeholder="이름" >
+                    <label style="display: block;">설명(장소, 시간 등)</label>
+                    <input class="ex" type="text" name="" placeholder="이름" style="margin-bottom: 20px;">
+                    <a class="submit" href="#">등록하기</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="/__/firebase/9.8.2/firebase-app-compat.js"></script>
+    <script src="/__/firebase/9.8.2/firebase-firestore-compat.js"></script>
+    <script src="/__/firebase/9.8.2/firebase-storage-compat.js"></script>
+    <script src="jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="toggle.js"></script>
+    <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=899c50ba73a872018f6ad127396c1294&libraries=clusterer"></script>
+    <script type="text/javascript">
+      const firebaseConfig = {
+        apiKey: "AIzaSyADg7mnSEdQtExUNzCGwiuB0aOk84UJ5uU",
+        authDomain: "asap-8582a.firebaseapp.com",
+        projectId: "asap-8582a",
+        storageBucket: "asap-8582a.appspot.com",
+        messagingSenderId: "404789921836",
+        appId: "1:404789921836:web:4dc0c4957f5dca607ce989",
+        measurementId: "G-WGJM194DSR"
+      };
+      const app = firebase.initializeApp(firebaseConfig);
+    </script> 
+  </body>
+</html>

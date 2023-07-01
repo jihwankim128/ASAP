@@ -1,0 +1,49 @@
+.main {
+    display: none;
+	position: fixed;
+    width: 500px;
+    z-index: 10;
+    background: white;
+    border-right: 1px solid rgba(0, 0, 0, 0.1);
+    height: 95%;
+    overflow: auto;
+}
+.marker_list {
+    color: black;
+    margin: 10px;
+	display: flex;
+	justify-content: auto;
+    align-items: center;
+    border: 1px solid rgba(0,0 ,0,0.2);
+}
+.marker_list:hover {
+    border: 1px solid rgba(255, 88, 88, 1);
+}
+.findDogImg {
+    border: 1px solid #ff5858;
+    margin: 10px;
+    height: 200px;
+    width: 50%;
+}
+.dogInfo {
+    height: 200px;
+    width: 50%;
+}
+.list_info{
+    padding: 0;
+    list-style: none;
+}
+
+.map{
+    border-radius: 24px;
+}
+.dogImg {
+    width: 100%; height: 100%
+}
+@media screen and (max-width: 768px) {
+    .main {
+        width: 100%;
+        bottom: 0px;
+        height: 30%;
+    }
+}

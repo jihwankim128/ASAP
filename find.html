@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html style="height: 94.5%;">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project ASAP</title> 
+    <link href="header_.css" type="text/css" rel="stylesheet">
+    <link href="find_list.css" type="text/css" rel="stylesheet">
+    <link href="font.css" type="text/css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/1443bcac90.js" crossorigin="anonymous"></script>
+    <style type="text/css">
+    </style>
+</head>
+<body style="height: 100%;">    
+    <nav class="navBar">
+        <div class="navBar_logo">
+            <i class="fa-solid fa-dog"></i>
+            <a href="">ASAP 프로젝트</a>
+        </div>
+        <ul class="navBar_menu">
+           <a href="index.html"><li>메인</li></a> 
+           <a href="report.html"><li>제보하기</li></a> 
+           <a href="lost.html"><li>잃어버렸어요</li></a>
+           <a href="#"><li>주변 강아지 찾기</li></a>
+        </ul>
+        <a href="#" class="navBar_toggleBtn">
+            <i class="fa-solid fa-bars"></i>
+        </a>
+    </nav>
+    <div class="_body">
+        <div class="main" id="main"style="background-color: #ff5858;">
+        </div>
+    </div>
+    <div class="map" id="map" style="width: 100%; height: 100%;"></div>
+    <script src="/__/firebase/9.8.2/firebase-app-compat.js"></script>
+    <script src="/__/firebase/9.8.2/firebase-firestore-compat.js"></script>
+    <script src="/__/firebase/9.8.2/firebase-storage-compat.js"></script>
+    <script src="jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="toggle.js"></script>
+    <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=899c50ba73a872018f6ad127396c1294&libraries=clusterer"></script>
+    <script type="text/javascript">
+      const firebaseConfig = {
+        apiKey: "AIzaSyADg7mnSEdQtExUNzCGwiuB0aOk84UJ5uU",
+        authDomain: "asap-8582a.firebaseapp.com",
+        projectId: "asap-8582a",
+        storageBucket: "asap-8582a.appspot.com",
+        messagingSenderId: "404789921836",
+        appId: "1:404789921836:web:4dc0c4957f5dca607ce989",
+        measurementId: "G-WGJM194DSR"
+      };
+      const app = firebase.initializeApp(firebaseConfig);
+    </script>
+    <script type="text/javascript" src="data.js"></script>
+    <script>
+        //마커의 정보를 담은 class (시간,위도,경도,설명,이미지,)
+        var Info = function(time, lat, lon, ex, url, key){
+            this.time = time;
+            this.lat = lat;
+            this.ex = ex;
+            this.lon = lon;
+            this.imgURL = url;
+            this.key = key;
+        }
+        var mapContainer = document.getElementById('map'),
+        mapOption, lat, lon, locPosition, map, markers=[], markerKey=[], clusterer, marker;
+        var finder = [], d_markers=[];
+        const db = firebase.firestore();
+        //firestore에서 DB 가져오기, 객체 정보 + 키값
+        db.collection('제보').get().then((markerInfo)=>{
+            markerInfo.forEach((doc)=>{
+                var markerKey = doc.id;
+                //console.log(doc.id);
+                d=doc.data();
+                finder.push(new Info(d.시간,d.경도,d.위도,d.설명,d.imgURL, markerKey));
+            });
+            //console.log("man", finder);
+            //console.log("man", finder[0].key);
+            //console.log(finder[0].img, finder[0].id);
+
+            //내 위치를 받아와서 디폴트로 중앙 값 설정
+            navigator.geolocation.getCurrentPosition(function(position) {
+                lat = position.coords.latitude, 
+                lon = position.coords.longitude; 
+                locPosition = new kakao.maps.LatLng(lat, lon);
+                //console.log("1 " ,locPosition);
+                mapOption = { 
+                    center: locPosition, 
+                    level: 3
+                }; 
+                map = new kakao.maps.Map(mapContainer, mapOption);
+                var imageSrc = "nomal.png"; 
+                var imageSize = new kakao.maps.Size(70, 100); 
+                var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
+                clusterer = new kakao.maps.MarkerClusterer({
+                    map: map, 
+                    averageCenter: true, 
+                     styles: [{
+                width : '60px', height : '60px',
+                background: 'rgba(255, 153, 0, .8)',
+                borderRadius: '30px',
+                color: '#000',
+                textAlign: 'center',
+                fontWeight: 'bold',
+                lineHeight: '61px'
+            }],
+
+                    minLevel: 3,  
+                    minClusterSize: 1,
+                });
+                clusterer2 = new kakao.maps.MarkerClusterer({
+                    map: map, 
+                    averageCenter: true, 
+                    styles: [{ 
+                width : '60px', height : '60px',
+                background: 'rgba(255, 80, 80, .8)',
+                borderRadius: '30px',
+                color: '#000',
+                textAlign: 'center',
+                fontWeight: 'bold',
+                lineHeight: '61px'
+        
+                    }],
+                    minLevel: 3,
+                    minClusterSize: 3,
+                });
+                var position = [];
+                var drawingCircle;
+                var markerPosition;
+                var findTime = [];
+                var d_markers = [];
+                var circles = [];var circle;
+                function mouseOverListener(map, marker, infoWindow) {
+                    return function () { infoWindow.open(map, marker); };
+                }
+                function mouseOutListener(infoWindow) {
+                    return function () { infoWindow.close(); };
+                }
+                var infoWindow = [];
+                for(var i =0;i<data.length; i++) {
+                    lat = data[i]["경도"];
+                    lon = data[i]["위도"];
+                    locPosition = new kakao.maps.LatLng(lon, lat);
+                    marker = new kakao.maps.Marker({map: map, position: locPosition,});
+                    infoWindow.push( new kakao.maps.InfoWindow({
+                        content: data[i]["업소명"]+"<br>"+data[i]["전화번호"],
+                    }));
+                    d_markers.push(marker);
+                    kakao.maps.event.addListener(marker, "click", mouseOverListener(map, marker, infoWindow[i]));
+                    kakao.maps.event.addListener(marker, "rightclick", mouseOutListener(infoWindow[i]));
+                }
+                clusterer2.addMarkers(d_markers);
+                for(let i = 0; i<finder.length; i++){
+                    position.push(new kakao.maps.LatLng(finder[i].lat,finder[i].lon));
+                    //console.log(position);
+                    //console.log(position);
+                    //console.log(locPosition);
+                    //console.log(markers);
+                    //console.log(finder[i].time);
+                    findTime.push(new Date(finder[i].time).toLocaleString());
+                    //console.log(findTime);
+                    uploadTime = (new Date().getTime()-finder[i].time)/1000;
+                    if(uploadTime<=10800) {
+                        goldimageSrc = "golden.png";
+                        goldSize = new kakao.maps.Size(70, 100); 
+                        var goldMarker = new kakao.maps.MarkerImage(goldimageSrc, goldSize); 
+                        markers.push(new kakao.maps.Marker({map: map,image: goldMarker,position: position[i]}));
+                    } else {
+                        markers.push(new kakao.maps.Marker({map: map,image: markerImage,position: position[i]}));
+                    }
+                    //console.log(uploadTime);
+                    kakao.maps.event.addListener(markers[i], "click", function(mouseEvent) {
+                        for (var j = 0; j < circles.length; j++) {
+                            circles[j].setMap(null); 
+                        }
+                        circles=[];
+                        markerPosition=markers[i].getPosition();
+                        var c1 = markerPosition;
+                        //console.log("2",markers[i].getPosition());
+                        circle = new kakao.maps.Circle({ 
+                            center : markerPosition, // 원의 중심좌표입니다
+                            radius: 300, // 원의 반지름입니다 m 단위 이며 선 객체를 이용해서 얻어옵니다
+                            strokeWeight: 1, // 선의 두께입니다
+                            strokeColor: '#00a0e9', // 선의 색깔입니다
+                            strokeOpacity: 0.1, // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
+                            strokeStyle: 'solid', // 선의 스타일입니다
+                            fillColor: '#00a0e9', // 채우기 색깔입니다
+                            fillOpacity: 0.2  // 채우기 불투명도입니다 
+                        });
+                        circle.setMap(map);
+                        circles.push(circle);
+                        var appended = false;
+                        markers.forEach(function(m,index) {
+                            var c2 = m.getPosition();
+                            var poly = new kakao.maps.Polyline({
+                              // map: map, 을 하지 않아도 거리는 구할 수 있다.
+                              path: [c1, c2]
+                            });
+                            var dist = poly.getLength(); // m 단위로 리턴
+                            if(dist<=300) {
+                                if (!appended) {
+                                    $('.main').remove();
+                                    $('._body').append('<div class="main" id="main"style="background-color: #ff5858;"></div>');
+                                    appended=true;
+                                }
+                                $('.main').css('display', 'block');
+                                $('.main').append('<a class="marker_list" href="javascript:locationC'+position[index]+'" style="background-color: white"> <div class="findDogImg" ><img class="dogImg" style="width: 100%; height: 100%;" src="'+finder[index].imgURL+'"> </div> <div class="dogInfo"style="padding: 10px 10px;"> <h3>발견한 반려견 정보</h3> <ul class="list_info"> <li id="input1">제보 시간<br>'+findTime[index]+'</li> <hr> <li>설명 : '+finder[index].ex+'</li> </ul> </div> </a>');
+                            }
+                           // console.log("c1 = ",c1, "\nc2 = ", c2 , "\nm = ",m,"= ",dist,"\n\n");
+                        });
+                        appended=false;
+
+                            //console.log("c,",clusterer2);
+                        d_markers.forEach(function(m,index) {
+                            infoWindow[index].close();
+                            var c2 = m.getPosition();
+                            var poly = new kakao.maps.Polyline({
+                              // map: map, 을 하지 않아도 거리는 구할 수 있다.
+                              path: [c1, c2]
+                            });
+                            var dist = poly.getLength(); // m 단위로 리턴
+                            if(dist<=300) {
+                                infoWindow[index].open(map,m);
+                            }
+                           // console.log("c1 = ",c1, "\nc2 = ", c2 , "\nm = ",m,"= ",dist,"\n\n");
+                        });
+                        //console.log(markers[i].getPosition().La, markers[i].getPosition().Ma)
+                        //alert("클릭했습니다, 인덱스는 "+i+"입니다.");
+                    });
+                }
+                clusterer.addMarkers(markers);
+                
+                kakao.maps.event.addListener(map, "click", function(){ $('#main').css('display', 'none');});
+            });
+        });
+        function locationC(x, y){
+            var bounds = new kakao.maps.LatLngBounds();
+            var posit = new kakao.maps.LatLng(x,y);
+            //console.log(posit);
+            bounds.extend(posit);
+            map.setBounds(bounds);
+        }
+        var start = new Date();
+        function timedms(){
+          var now = new Date();
+          //console.log(now - start);
+        }
+        setTimeout(timedms,10000);
+    </script>   
+  </body>
+</html>

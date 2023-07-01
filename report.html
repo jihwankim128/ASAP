@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html style="height:100%;">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project ASAP</title>
+    <link href="report.css" type="text/css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="header_.css">
+    <link rel="stylesheet" type="text/css" href="font.css">
+    <script src="https://kit.fontawesome.com/1443bcac90.js" crossorigin="anonymous"></script>
+</head>
+<body style="height:100%;">    
+    <nav class="navBar">
+        <div class="navBar_logo">
+            <i class="fa-solid fa-dog"></i>
+            <a href="">ASAP 프로젝트</a>
+        </div>
+        <ul class="navBar_menu">
+           <a href="index.html"><li>메인</li></a> 
+           <a href="#"><li>제보하기</li></a> 
+           <a href="lost.html"><li>잃어버렸어요</li></a>
+           <a href="find.html"><li>주변 강아지 찾기</li></a>
+        </ul>
+        <a href="#" class="navBar_toggleBtn">
+            <i class="fa-solid fa-bars"></i>
+        </a>
+    </nav>
+    <div class="wrap">
+        <div class="box" style="height:100%">
+            <div class="locate" style="">
+                <a class="btn" href='javascript:glocation()'>
+                    <label class = "desktop" >내 위치로 이동하기</label>
+                </a>
+            <div class="choice_map" id="map" style="z-index: 1;" ></div>
+        </div>
+            <div class="img_cont">  
+                <div class="myImg" style="">
+                    <div class="img" id="image_preview">
+                        <img src="image.jpg" id="imgFile"alt="사진영역">
+                    </div>
+                <div class ="contain">
+                    <input class="upload-name" id="upLoad" value="첨부파일" placeholder="첨부파일" readonly>
+                    <label class="find" for="file">파일찾기</label> 
+                    <input type="file" id="file"> <div></div>   
+                    <label style="width: 94%;">간략한 설명</label> 
+                    <input type="text" class="explain" id="explain"placeholder="ex) 스타벅스 옆 나무">
+                    <input type="button" class="submit" value="분실견 등록하기" onclick="send()">    
+                </div>
+            </div>
+        </div>  
+    </div>  
+    <script type="text/javascript" src="toggle.js"></script>
+    <script src="/__/firebase/9.8.2/firebase-app-compat.js"></script>
+    <script src="/__/firebase/9.8.2/firebase-firestore-compat.js"></script>
+    <script src="/__/firebase/9.8.2/firebase-storage-compat.js"></script>
+    <script src="jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=899c50ba73a872018f6ad127396c1294"></script>
+    <script type="text/javascript">
+      const firebaseConfig = {
+        apiKey: "AIzaSyADg7mnSEdQtExUNzCGwiuB0aOk84UJ5uU",
+        authDomain: "asap-8582a.firebaseapp.com",
+        projectId: "asap-8582a",
+        storageBucket: "asap-8582a.appspot.com",
+        messagingSenderId: "404789921836",
+        appId: "1:404789921836:web:4dc0c4957f5dca607ce989",
+        measurementId: "G-WGJM194DSR"
+      };
+      const app = firebase.initializeApp(firebaseConfig);
+    </script>
+    <script>
+        var mapContainer = document.getElementById('map'),
+        mapOption, lat, lon, locPosition, map, markers=[], bounds, file;
+        navigator.geolocation.getCurrentPosition(function(position) {
+            lat = position.coords.latitude, 
+            lon = position.coords.longitude;  
+            locPosition = new kakao.maps.LatLng(lat, lon); 
+            mapOption = { 
+                center: locPosition, 
+                level: 3 
+            }; 
+            map = new kakao.maps.Map(mapContainer, mapOption); 
+            bounds = new kakao.maps.LatLngBounds();
+            bounds.extend(locPosition);
+            console.log(bounds);
+            var imageSrc = "https://s3.ap-northeast-2.amazonaws.com/materials.spartacodingclub.kr/2021_05_free_parents/sparta-marker.png"; 
+            var imageSize = new kakao.maps.Size(40, 50); 
+            var markerImage = new kakao.maps.MarkerImage(  imageSrc, imageSize); 
+            var marker = new kakao.maps.Marker({
+                map: map,
+                image : markerImage,
+                position: locPosition
+            });
+            markers.push(marker)
+            markers[0].setMap(map);
+            markers[0].setDraggable(true);
+            kakao.maps.event.addListener(map, 'click',
+                function(mouseEvent) {        
+                    markers[0].setMap(map);
+                    var latlng = mouseEvent.latLng; 
+                    markers[0].setPosition(latlng);
+                }
+            );
+
+        });
+        function glocation(){
+            console.log("glocation실행");
+
+            markers[0].setMap(null);
+            markers.pop();
+            map.setBounds(bounds);
+            var imageSrc = "https://s3.ap-northeast-2.amazonaws.com/materials.spartacodingclub.kr/2021_05_free_parents/sparta-marker.png"; 
+            var imageSize = new kakao.maps.Size(40, 50); 
+            var markerImage = new kakao.maps.MarkerImage( imageSrc, imageSize); 
+            var marker = new kakao.maps.Marker({
+                map: map,
+                image : markerImage,
+                position: locPosition
+            });
+            markers.push(marker);
+            markers[0].setMap(map);
+
+            markers[0].setDraggable(true);
+            kakao.maps.event.addListener(map, 'click', 
+                function(mouseEvent) {        
+                    markers[0].setMap(map);
+                    var latlng = mouseEvent.latLng; 
+                    markers[0].setPosition(latlng);
+                }
+            );
+
+        }
+        var start = new Date().getTime();
+        function timedms(){
+          var now = new Date();
+          console.log(now - start);
+        }
+        setTimeout(timedms,10000);
+        function send(){
+            console.log($('#explain').val());
+            console.log("send 실행 중");
+            //console.log($(".upload-name").val());
+            //console.log($(".explain").val());
+                        console.log(markers[0].getPosition().La);
+                        console.log(markers[0].getPosition().Ma);
+            if ($(".upload-name").val()=="첨부파일"||$(".upload-name").val()=="") alert("이미지 올려");
+            else if($(".explain").val()=="") alert("설명을 작성해주세요.");
+            else {
+                const db = firebase.firestore();
+                const storage = firebase.storage();
+                var ref = storage.ref();
+                var imgUpLoad = ref.child('images/'+file.name).put(file);
+                imgUpLoad.on('state_changed', null, 
+                    (error)=>{ console.error('에러-'+ error);},
+                    ()=> {
+                    //console.log("성공");
+                    imgUpLoad.snapshot.ref.getDownloadURL().then((url)=>{
+                        //console.log(markers[0].getPosition().Ma);
+                        db.collection('제보').add({위도:markers[0].getPosition().La, 경도:markers[0].getPosition().Ma, 설명:$('#explain').val(), 시간:start, imgURL:url});
+                        glocation();
+                        resetFormElement($('#explain'));
+                        $('#imgFile').attr("src","image.jpg");
+                        resetFormElement($('#upLoad'));
+                    });
+                });
+            }   
+        }
+        function resetFormElement(e) {
+            e.wrap('<form>').closest('form').get(0).reset();
+            e.unwrap();
+        }
+        $("#file").on('change',function(){
+            var fileName = $("#file").val();
+            $(".upload-name").val(fileName);
+            ext = $(this).val().split('.').pop().toLowerCase();
+            if($.inArray(ext, ['gif', 'png', 'jpg', 'jpeg']) == -1) {
+                window.alert('이미지 파일이 아닙니다! (gif, png, jpg, jpeg 만 업로드 가능)');
+                resetFormElement($(this));
+            } else {
+                file = $('#file').prop("files")[0];
+                blobURL = window.URL.createObjectURL(file);
+                $('#image_preview img').attr('src', blobURL);
+                $('#image_preview').slideDown(); 
+                $(this).slideUp();
+            }
+        });
+      </script>
+  </body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale = 1.0">
+    <title>ASAP</title>
+    <link rel="stylesheet" type="text/css" href="mainstyle.css">
+    <link rel="stylesheet" type="text/css" href="header_.css">
+    <link href="font.css" type="text/css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/1443bcac90.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div id="wrap">
+        <nav class="navBar">
+            <div class="navBar_logo">
+                <i class="fa-solid fa-dog"></i>
+                <a href="">ASAP 프로젝트</a>
+            </div>
+            <ul class="navBar_menu">
+                <a href="#">
+                    <li>메인</li>
+                </a>
+                <a href="report.html">
+                    <li>제보하기</li>
+                </a>
+                <a href="lost.html">
+                    <li>잃어버렸어요</li>
+                </a>
+                <a href="find.html">
+                    <li>주변 강아지 찾기</li>
+                </a>
+            </ul>
+            <a href="#" class="navBar_toggleBtn">
+                <i class="fa-solid fa-bars"></i>
+            </a>
+        </nav>
+        <section class="section">
+
+            <input type="radio" name="slide" id="page1" checked>
+            <input type="radio" name="slide" id="page2">
+            <input type="radio" name="slide" id="page3">
+
+            <div class="slidewrap">
+                <ul class="slidelist">
+                    <li>
+                        <a>
+                            <img src="banner1.jpg">
+                        </a>
+                    </li>
+                    <li>
+                        <a>
+                            <img src="banner2.jpg">
+                        </a>
+                    </li>
+                    <li>
+                        <a>
+                            <img src="banner3.jpg">
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="slide-control">
+                    <div class="control1">
+                        <label for="page3" class="left"></label>
+                        <label for="page2" class="right"></label>
+                    </div>
+                    <div class="control2">
+                        <label for="page1" class="left"></label>
+                        <label for="page3" class="right"></label>
+                    </div>
+                    <div class="control3">
+                        <label for="page2" class="left"></label>
+                        <label for="page1" class="right"></label>
+                    </div>
+                </div>
+
+                <div class="bot">
+                    <img src="banner5.jpg">
+                </div>
+            </div>
+        </section>
+    </div>
+    <script type="text/javascript" src="toggle.js"></script>
+</body>
+
+</html>

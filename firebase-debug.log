@@ -1,0 +1,29 @@
+[debug] [2022-06-08T08:21:36.462Z] ----------------------------------------------------------------------
+[debug] [2022-06-08T08:21:36.465Z] Command:       D:\Program\node\node.exe C:\Users\Administrator\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js serve
+[debug] [2022-06-08T08:21:36.466Z] CLI Version:   11.0.1
+[debug] [2022-06-08T08:21:36.466Z] Platform:      win32
+[debug] [2022-06-08T08:21:36.466Z] Node Version:  v16.15.0
+[debug] [2022-06-08T08:21:36.525Z] Time:          Wed Jun 08 2022 17:21:36 GMT+0900 (대한민국 표준시)
+[debug] [2022-06-08T08:21:36.526Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2022-06-08T08:21:36.539Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2022-06-08T08:21:36.650Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2022-06-08T08:21:36.650Z] > authorizing via signed-in user (jihwangim128@gmail.com)
+[debug] [2022-06-08T08:21:36.651Z] [iam] checking project asap-8582a for permissions ["firebase.projects.get"]
+[debug] [2022-06-08T08:21:36.653Z] > refreshing access token with scopes: []
+[debug] [2022-06-08T08:21:36.653Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2022-06-08T08:21:36.878Z] <<< HTTP RESPONSE 200 {"cache-control":"no-cache, no-store, max-age=0, must-revalidate","pragma":"no-cache","date":"Wed, 08 Jun 2022 08:21:36 GMT","expires":"Mon, 01 Jan 1990 00:00:00 GMT","content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","server":"scaffolding on HTTPServer2","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2022-06-08T08:21:36.901Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/asap-8582a:testIamPermissions [none]
+[debug] [2022-06-08T08:21:36.901Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/asap-8582a:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2022-06-08T08:21:37.207Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
+[debug] [2022-06-08T08:21:37.208Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}
+[debug] [2022-06-08T08:21:37.648Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/asap-8582a:testIamPermissions 200
+[debug] [2022-06-08T08:21:37.648Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/asap-8582a:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2022-06-08T08:21:37.649Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/asap-8582a [none]
+[debug] [2022-06-08T08:21:38.056Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/asap-8582a 200
+[debug] [2022-06-08T08:21:38.056Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/asap-8582a {"projectId":"asap-8582a","projectNumber":"404789921836","displayName":"asap","name":"projects/asap-8582a","resources":{"hostingSite":"asap-8582a","storageBucket":"asap-8582a.appspot.com","locationId":"asia-east1"},"state":"ACTIVE"}
+[info] 
+[info] === Serving from 'D:\김지환\공부\대학\웹프\project'...
+[info] 
+[debug] [2022-06-08T08:21:39.510Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/asap-8582a/sites 

@@ -1,0 +1,86 @@
+
+body {
+	margin: 0;
+}
+a{
+	text-decoration: none;
+	color: white;
+}
+.navBar {
+	display: flex;
+	justify-content: auto;
+	align-items: center;
+	background-color: #ff5858;
+	padding: 8px 24px;
+}
+
+.navBar_logo{
+  left:30px;
+	font-size: 24px;
+	color: white;
+}
+.navBar_menu{
+  margin: 0px;
+	display: flex;
+	list-style: none;
+	padding-left: 100px;
+}
+.navBar_menu a li {
+	font-size: 18px;
+	color: white;
+	padding: 4px 20px;
+}
+.navBar_menu li:hover {
+	background-color: white;
+	border-radius: 4px;
+}
+.navBar_menu a li:hover {
+	color: black;
+}
+.navBar_icon {
+	margin-top: 10px;
+	list-style: none;
+	color: white;
+	display: flex;
+	font-size: 30px;
+}
+.navBar_toggleBtn {
+	display: none;
+}
+@media screen and (max-width: 768px) {
+
+  .navBar {
+  	flex-direction: column;
+  	align-items: flex-start;
+  	padding: 8px 24px;
+  }
+  .navBar_menu {
+  	display: none;
+  	padding: 0;
+  	flex-direction: column;
+  	align-items: center;
+  	width: 100%;
+  }
+  .navBar_menu a{
+  	width: 100%;
+  	text-align: center;
+  }
+  .navBar_toggleBtn {
+  	display: block;
+  	font-size: 25px;
+  	position: absolute;
+  	right: 32px;
+  }
+  .navBar_toggleBtn.active{
+  	color: black;
+  }
+  .navBar_toggleBtn.active:hover{
+  	color: white;
+  }
+  .navBar_toggleBtn:hover {
+  	color: black;
+  }
+  .navBar_menu.active{
+  	display: flex;
+  }
+}
